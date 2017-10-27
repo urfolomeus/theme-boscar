@@ -69,7 +69,22 @@ function _branch_info
   printf '%s' $branch
 end
 
+function _show_user
+  if test $USER = 'root'
+    set_color red
+  else
+    set_color green
+  end
+
+  set user (whoami)
+  if test $user != $DEFAULT_USER
+    printf '%s ' $user
+  end
+end
+
 function _info
+  _show_user
+
   set -l dir_color (set_color blue)
   echo -ns $dir_color (_path_info)
 
