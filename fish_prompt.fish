@@ -53,14 +53,11 @@ function _status_info
     echo -ns ''
   else
     set -l local_status_color (set_color red)
-    set -l normal_color (set_color normal)
     set -l upstream_status_color (set_color cyan)
 
     echo -ns ' '
-    echo -ns $normal_color '('
     echo -ns $local_status_color $local_status_info
     echo -ns $upstream_status_color $upstream_status_info
-    echo -ns $normal_color ')'
   end
 end
 
