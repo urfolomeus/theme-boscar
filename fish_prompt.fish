@@ -1,35 +1,44 @@
-function _print_path
+function _path_info
   set cwd (prompt_segments)
   printf '%s' (string join '/' $cwd)
 end
 
-function _git_branch_name
+function _branch_info
   echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
 end
 
-function _print_prompt_char
+function _prompt_char
   printf '⋊> '
 end
 
-function fish_prompt
-  set -l last_status $status
+function _new_line
+  echo -e ''
+end
 
-  set -l normal (set_color normal)
+function _info
   set -l blue (set_color blue)
-  set -l green (set_color green)
-  set -l red (set_color red)
   set -l yellow (set_color yellow)
 
   set -l branch_color $yellow
   set -l dir_color $blue
 
-  set -l prompt_color $red
-  if test $last_status = 0
-    set prompt_color $green
-  end
+  echo -ns $dir_color (_path_info)
+  echo -ns ' '
+  echo -ns $branch_color (_branch_info) $normal
+end
 
-  echo -e ''
-  echo -e -n -s $dir_color (_print_path) ' ' $branch_color (_git_branch_name) $normal
-  echo -e ''
-  echo -e -n -s $prompt_color (_print_prompt_char) $normal
+function _prompt
+  set -l normal (set_color normal)
+  set -l green (set_color green)
+
+  set prompt_color $green
+
+  echo -ns $prompt_color (_prompt_char) $normal
+end
+
+function fish_prompt
+  _new_line
+  _info
+  _new_line
+  _prompt
 end
