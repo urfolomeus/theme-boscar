@@ -65,7 +65,8 @@ function _status_info
 end
 
 function _branch_info
-  set -l branch (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  set branch_symbol \uE0A0
+  set branch (command git symbolic-ref HEAD ^/dev/null | sed -e "s|^refs/heads/|$branch_symbol |")
   printf '%s' $branch
 end
 
