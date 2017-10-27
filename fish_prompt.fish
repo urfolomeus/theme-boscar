@@ -8,7 +8,7 @@ end
 
 function _branch_info
   set -l branch (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
-  printf ' %s' $branch
+  printf '%s' $branch
 end
 
 function _print_prompt_char
@@ -24,6 +24,7 @@ function _info
   set -l dir_color (set_color blue)
 
   echo -ns $dir_color (_path_info)
+  echo -ns ' '
   echo -ns $branch_color (_branch_info)
 end
 
