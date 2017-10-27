@@ -45,6 +45,11 @@ function _local_status_info
   printf '%s' $state
 end
 
+function _upstream_status_info
+  set state (git_ahead)
+  printf '%s' $state
+end
+
 function _print_prompt_char
   printf '%s ' $prompt_char
 end
@@ -56,8 +61,11 @@ end
 function _info
   set -l branch_color (set_color yellow)
   set -l dir_color (set_color blue)
+  set -l upstream_status_color (set_color red)
 
   set -l local_status_info (_local_status_info)
+  set upstream_status_info (_upstream_status_info)
+
   set local_status_color (set_color red)
   if test $local_status_info = '✓'
     set local_status_color (set_color green)
@@ -70,6 +78,15 @@ function _info
   echo -ns $local_status_color'['
   echo -ns $local_status_info
   echo -ns ']'
+
+  # can't seem to get -n to work
+  if test -z $upstream_status_info
+    echo -ns ''
+  else
+    echo -ns $upstream_status_color '['
+    echo -ns $upstream_status_info
+    echo -ns ']'
+  end
 end
 
 function _prompt
