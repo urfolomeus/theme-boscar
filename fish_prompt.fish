@@ -1,3 +1,6 @@
+# Prompt Char
+set prompt_char '⋊>'
+
 function _path_info
   set cwd (prompt_segments)
   printf '%s' (string join '/' $cwd)
@@ -8,8 +11,8 @@ function _branch_info
   printf ' %s' $branch
 end
 
-function _prompt_char
-  printf '⋊> '
+function _print_prompt_char
+  printf '%s ' $prompt_char
 end
 
 function _new_line
@@ -28,7 +31,7 @@ function _prompt
   set -l normal (set_color normal)
   set -l prompt_color (set_color green)
 
-  echo -ns $prompt_color (_prompt_char) $normal
+  echo -ns $prompt_color (_print_prompt_char) $normal
 end
 
 function fish_prompt
