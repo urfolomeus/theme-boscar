@@ -3,19 +3,20 @@ function _print_path
   printf '%s' (string join '/' $cwd)
 end
 
-function _top_line
-  set_color blue
-  _print_path
-  set_color normal
-end
-
-function _bottom_line
+function _print_prompt_char
   printf '⋊> '
 end
 
 function fish_prompt
+  set -l last_status $status
+
+  set -l normal (set_color normal)
+  set -l blue (set_color blue)
+
+  set -l dir_color $blue
+
   echo -e ''
-  _top_line
-  echo
-  _bottom_line
+  echo -e -n -s $dir_color (_print_path) $normal
+  echo -e ''
+  echo -e -n (_print_prompt_char)
 end
