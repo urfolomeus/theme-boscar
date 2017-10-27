@@ -61,7 +61,7 @@ end
 function _info
   set -l branch_color (set_color yellow)
   set -l dir_color (set_color blue)
-  set -l upstream_status_color (set_color red)
+  set -l upstream_status_color (set_color cyan)
 
   set -l local_status_info (_local_status_info)
   set upstream_status_info (_upstream_status_info)
