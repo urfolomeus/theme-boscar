@@ -1,11 +1,16 @@
+function _print_path
+  set cwd (prompt_segments)
+  printf '%s' (string join '/' $cwd)
+end
+
 function _top_line
   set_color blue
-  printf $PWD
+  _print_path
   set_color normal
 end
 
 function _bottom_line
-  printf '> '
+  printf '⋊> '
 end
 
 function fish_prompt
