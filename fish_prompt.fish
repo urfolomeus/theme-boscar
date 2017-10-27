@@ -4,8 +4,8 @@ set prompt_char '⋊>'
 # Status Chars
 set cleanstate_char '✓'
 set dirtystate_char '!'
-set stashstate_char '↩'
-set untrackedstate_char '☡'
+set stashstate_char '⚑'
+set untrackedstate_char '*'
 
 function _path_info
   set cwd (prompt_segments)
