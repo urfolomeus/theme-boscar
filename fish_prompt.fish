@@ -61,6 +61,7 @@ end
 function _info
   set -l branch_color (set_color yellow)
   set -l dir_color (set_color blue)
+  set -l normal_color (set_color normal)
   set -l upstream_status_color (set_color cyan)
 
   set -l local_status_info (_local_status_info)
@@ -74,19 +75,17 @@ function _info
   echo -ns $dir_color (_path_info)
   echo -ns ' '
   echo -ns $branch_color (_branch_info)
-  echo -ns ' '
-  echo -ns $local_status_color'['
-  echo -ns $local_status_info
-  echo -ns ']'
+  echo -ns $normal_color ' ('
+  echo -ns $local_status_color $local_status_info
 
   # can't seem to get -n to work
   if test -z $upstream_status_info
     echo -ns ''
   else
-    echo -ns $upstream_status_color '['
-    echo -ns $upstream_status_info
-    echo -ns ']'
+    echo -ns $upstream_status_color $upstream_status_info
   end
+
+  echo -ns $normal_color ')'
 end
 
 function _prompt
