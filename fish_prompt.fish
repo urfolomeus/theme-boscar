@@ -4,7 +4,8 @@ function _path_info
 end
 
 function _branch_info
-  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  set -l branch (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  printf ' %s' $branch
 end
 
 function _prompt_char
@@ -16,22 +17,16 @@ function _new_line
 end
 
 function _info
-  set -l blue (set_color blue)
-  set -l yellow (set_color yellow)
-
-  set -l branch_color $yellow
-  set -l dir_color $blue
+  set -l branch_color (set_color yellow)
+  set -l dir_color (set_color blue)
 
   echo -ns $dir_color (_path_info)
-  echo -ns ' '
-  echo -ns $branch_color (_branch_info) $normal
+  echo -ns $branch_color (_branch_info)
 end
 
 function _prompt
   set -l normal (set_color normal)
-  set -l green (set_color green)
-
-  set prompt_color $green
+  set -l prompt_color (set_color green)
 
   echo -ns $prompt_color (_prompt_char) $normal
 end
