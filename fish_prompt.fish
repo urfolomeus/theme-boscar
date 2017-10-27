@@ -2,7 +2,6 @@
 set prompt_char '⋊>'
 
 # Status Chars
-set cleanstate_char '✓'
 set dirtystate_char '!'
 set stashstate_char '⚑'
 set untrackedstate_char '*'
@@ -24,8 +23,6 @@ function _build_local_status_info
     # Check for changes to be commited
   if git_is_touched
     echo -n $dirtystate_char
-  else
-    echo -n $cleanstate_char
   end
 
   # Check for untracked files
@@ -61,16 +58,12 @@ end
 function _info
   set -l branch_color (set_color yellow)
   set -l dir_color (set_color blue)
+  set -l local_status_color (set_color red)
   set -l normal_color (set_color normal)
   set -l upstream_status_color (set_color cyan)
 
   set -l local_status_info (_local_status_info)
   set upstream_status_info (_upstream_status_info)
-
-  set local_status_color (set_color red)
-  if test $local_status_info = '✓'
-    set local_status_color (set_color green)
-  end
 
   echo -ns $dir_color (_path_info)
   echo -ns ' '
