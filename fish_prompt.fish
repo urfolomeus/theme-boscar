@@ -11,11 +11,6 @@ function _path_info
   printf '%s' (string join '/' $cwd)
 end
 
-function _branch_info
-  set -l branch (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
-  printf '%s' $branch
-end
-
 # Display the state of the branch when inside of a git repo
 function _build_local_status_info
   git update-index --really-refresh -q 1> /dev/null
@@ -47,31 +42,20 @@ function _upstream_status_info
   printf '%s' $state
 end
 
-function _print_prompt_char
-  printf '%s ' $prompt_char
-end
-
-function _new_line
-  echo -e ''
-end
-
-function _info
+function _status_info
   set -l branch_color (set_color yellow)
-  set -l dir_color (set_color blue)
-  set -l local_status_color (set_color red)
-  set -l normal_color (set_color normal)
-  set -l upstream_status_color (set_color cyan)
+  echo -ns $branch_color (_branch_info)
 
   set local_status_info (_local_status_info)
   set upstream_status_info (_upstream_status_info)
 
-  echo -ns $dir_color (_path_info)
-  echo -ns ' '
-  echo -ns $branch_color (_branch_info)
-
   if test -z $local_status_info; and test -z $upstream_status_info
     echo -ns ''
   else
+    set -l local_status_color (set_color red)
+    set -l normal_color (set_color normal)
+    set -l upstream_status_color (set_color cyan)
+
     echo -ns ' '
     echo -ns $normal_color '('
     echo -ns $local_status_color $local_status_info
@@ -80,11 +64,38 @@ function _info
   end
 end
 
+function _branch_info
+  set -l branch (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  printf '%s' $branch
+end
+
+function _info
+  set -l dir_color (set_color blue)
+  echo -ns $dir_color (_path_info)
+
+  set -l pwd (prompt_pwd)
+  set -l is_dot_git (string match '*/.git' $pwd)
+
+  if git_is_repo; and test -z $is_dot_git
+    echo -ns ' '
+    _status_info
+  end
+
+end
+
+function _print_prompt_char
+  printf '%s ' $prompt_char
+end
+
 function _prompt
   set -l normal (set_color normal)
   set -l prompt_color (set_color green)
 
   echo -ns $prompt_color (_print_prompt_char) $normal
+end
+
+function _new_line
+  echo -e ''
 end
 
 function fish_prompt
