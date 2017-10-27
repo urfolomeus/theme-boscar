@@ -12,11 +12,18 @@ function fish_prompt
 
   set -l normal (set_color normal)
   set -l blue (set_color blue)
+  set -l green (set_color green)
+  set -l red (set_color red)
 
   set -l dir_color $blue
+
+  set -l prompt_color $red
+  if test $last_status = 0
+    set prompt_color $green
+  end
 
   echo -e ''
   echo -e -n -s $dir_color (_print_path) $normal
   echo -e ''
-  echo -e -n (_print_prompt_char)
+  echo -e -n -s $prompt_color (_print_prompt_char) $normal
 end
